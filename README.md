@@ -1,6 +1,6 @@
 # ⚡ GitPulse - GitHub Trending CLI & Web Dashboard
 
-**GitPulse** is a dual-interface application (CLI + Web Dashboard) that interacts with the GitHub REST API to track, filter, and display top trending open-source repositories in real time based on star velocity, timeframe, and language.
+[**GitPulse**](https://github.com/ajvan2808/github_trends) is a dual-interface application (CLI + Web Dashboard) that interacts with the GitHub REST API to track, filter, and display top trending open-source repositories in real time based on star velocity, timeframe, and language.
 
 ---
 
