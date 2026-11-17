@@ -440,24 +440,38 @@
 
         const response = await fetch(`/api/trending?${query.toString()}`);
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error || `HTTP ${response.status}: ${response.statusText || 'Server Error'}`);
         }
 
         const data = await response.json();
         loadedRepositories = Array.isArray(data) ? data : (data.data || []);
         
         document.getElementById('tickerCount').innerText = loadedRepositories.length;
+        document.getElementById('tickerCount').classList.remove('text-red-400');
         renderRepos(loadedRepositories);
 
       } catch (err) {
+        document.getElementById('tickerCount').innerText = "Err";
+        document.getElementById('tickerCount').classList.add('text-red-400');
         container.innerHTML = `
-          <div class="p-6 rounded-xl bg-red-950/30 border border-red-800 text-red-300 space-y-2 text-sm font-mono">
-            <div class="font-bold flex items-center gap-2 text-base">
-              <span class="material-symbols-outlined text-lg">error</span>
+          <div class="p-6 rounded-xl bg-red-950/40 border border-red-800 text-red-200 space-y-3 text-sm font-mono">
+            <div class="font-bold flex items-center gap-2 text-base text-red-300">
+              <span class="material-symbols-outlined text-xl">error</span>
               Failed to load trending repositories
             </div>
-            <div>${err.message}</div>
-            <div class="text-xs text-red-400">If rate limited by GitHub API, set GITHUB_TOKEN environment variable in app.py.</div>
+            <div class="bg-red-950/60 p-3 rounded-lg border border-red-800/60 text-xs text-red-300 break-words">
+              ${escapeHtml(err.message)}
+            </div>
+            <div class="text-xs text-on-surface-variant space-y-1.5 pt-1">
+              <div class="font-semibold text-on-surface">💡 Why did this happen?</div>
+              <div>GitHub limits unauthenticated search to <strong>10 requests/minute</strong>. When hosted on cloud platforms (e.g. Render), outbound IP addresses are shared among many applications and hit this limit quickly.</div>
+              <div class="pt-1 font-semibold text-on-surface">🔧 How to fix:</div>
+              <ul class="list-disc pl-5 space-y-1 text-outline">
+                <li><strong>On Render:</strong> Go to your Service Dashboard &rarr; <em>Environment</em> &rarr; Add <code>GITHUB_TOKEN</code> with your GitHub Personal Access Token (PAT).</li>
+                <li><strong>Locally:</strong> Add <code>GITHUB_TOKEN=your_token</code> inside a <code>.env</code> file in your project root.</li>
+              </ul>
+            </div>
           </div>
         `;
       }

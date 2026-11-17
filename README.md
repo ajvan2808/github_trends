@@ -1,8 +1,10 @@
 # ⚡ GitPulse - GitHub Trending CLI & Web Dashboard
 
+> A practice coding project inspired by [roadmap.sh/projects/github-trending-cli](https://roadmap.sh/projects/github-trending-cli). 
+
 **GitPulse** is a dual-interface application (CLI + Web Dashboard) that interacts with the GitHub REST API to track, filter, and display top trending open-source repositories in real time based on star velocity, timeframe, and language.
 
-Inspired by https://roadmap.sh/projects/github-trending-cli
+**Website**: https://github-pulse.onrender.com/
 
 ---
 
@@ -23,6 +25,23 @@ Inspired by https://roadmap.sh/projects/github-trending-cli
 ### 🔌 3. Shared Core API Client (`gh_service.py`)
 - Solves GitHub REST API search query building (`created:>=YYYY-MM-DD sort:stars`).
 - Includes automatic handling of GitHub API rate limits (60 req/hr unauthenticated or 5,000 req/hr with `GITHUB_TOKEN`).
+
+---
+
+## 📁 Project Structure
+
+```
+github_trends/
+├── README.md                 # Project Overview & Quickstart
+├── PROJECT_GUIDE.md          # Step-by-step tutorial & learning guide
+├── gh_service.py             # Core GitHub REST API search client
+├── cli.py                    # Command Line Tool (Typer + Rich)
+├── app.py                    # Flask Web Server entry point
+├── templates/
+│   └── index.html            # GitPulse Web Dashboard (Tailwind CSS UI)
+├── pyproject.toml / uv.lock  # Dependency & project configurations
+└── Procfile                  # Render deployment configuration (gunicorn app:app)
+```
 
 ---
 
